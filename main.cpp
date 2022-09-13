@@ -10,12 +10,9 @@ int main()
     Window window(win,"Chaos Game",Style::Fullscreen);
 
     std::vector<int> points; 
-    RectangleShape DrawPoints();
     while (window.isOpen())
     {
-        while(points.size() < 3)
-        {
-            if(Mouse::isButtonPressed(Mouse::Left))
+            if(Mouse::isButtonPressed(Mouse::Left) && points.size() < 6)
             {
             points.push_back(Mouse::getPosition(window).x);
             points.push_back(Mouse::getPosition(window).y);
@@ -23,5 +20,4 @@ int main()
         }
     
     }
-
 }
