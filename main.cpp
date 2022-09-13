@@ -1,38 +1,48 @@
+
 #include <SFML/Graphics.hpp>
-
-#include <SFML/Window.hpp>
-
 using namespace sf;
+#include <iostream>
+#include <vector>
+using namespace std;
+
 int main()
 {
     
-    VideoMode win(1280,960);
+    VideoMode win(1920,1080,32);
     
-    Window window(win,"Chaos Game",Style::Fullscreen);
+    RenderWindow window(win,"Chaos Game",Style::Default);
     Event event;
     Mouse mouse1;
-    Keyboard keyboard1;
-    std::vector<int> points; 
-    while (window.pollEvent(event))
+    vector<Vector2f> vertices;
+    vector<Vector2f> points;
+    Vector2f clicked;
+
+    RectangleShape rect(Vector2f(10,10));
+    rect.setPosition(1920/2,1080/2);
+    while(window.isOpen())
     {
-            if(event.type == Event::MouseLeft && points.size() < 6)
+        while(window.pollEvent(event))
+        {
+
+            if(event.type == Event::MouseLeft && vertices.size() < 3)
             {
-            points.push_back(mouse1.getPosition(window).x);
-            points.push_back(mouse1.getPosition(window).y);
+                clicked.x = event.mouseButton.x;
+                clicked.y = event.mouseButton.y;
+            vertices.push_back(clicked);
+            }
+            else if (event.mouseButton.button == Mouse::Right)
+            {
+                cout << "goodbye";
+            }
+            else if(event.KeyPressed == Keyboard::Escape)
+            {
+                window.close();
             }
 
-        
-        
-     
-   
-    
-    }
-    if(keyboard1.Escape)
-        {
-            window.close();
         }
-    for(int i = 0; i < 6; i++)
-    {
-        std::cout << points[i] << endl;
+    window.clear();
+    window.draw(rect);
+    
+   window.display();
     }
 }
