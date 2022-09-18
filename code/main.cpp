@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <vector>
+#include <ctime>
 using namespace sf;
 using namespace std;
 
@@ -9,6 +10,7 @@ int main()
     //declarations
     Event event;
     int j = 0;
+    srand((int)time(0));
     //window
     VideoMode win(1920, 1080, 32);
     RenderWindow window(win, "Chaos Game", Style::Default);
@@ -24,7 +26,7 @@ int main()
     textbox.setPosition(1920 / 4, 1080 / 4);
     
     //Mouse mouse1;
-    vector<Vector2f> vertices;
+    vector<Vector2f> vertices, lastvertices;
     vector<Vector2f> points;
     Vector2f clicked;
     Vector2f randomPoint;
@@ -86,8 +88,10 @@ int main()
                         for (int i = 0; i < 50000; i++)
                         {
                             randomVertice = rand() % 3;
+                            //Making random point half way away from our planted vertices
                             randomPoint.x = (points[i].x + vertices[randomVertice].x) / 2;
                             randomPoint.y = (points[i].y + vertices[randomVertice].y) / 2;
+                            //putting this point in a vector and printing it to screen
                             points.push_back(randomPoint);
                             rect.setPosition(points[i]);
                             window.draw(rect);
@@ -102,21 +106,32 @@ int main()
                         textbox.setString("You have enough vertices now");
                         textbox.setPosition(0, 0);
                         window.draw(textbox);
-                        int randomVertice;
-                        randomPoint.x = event.mouseButton.x;
-                        randomPoint.y = event.mouseButton.y;
+                        int randomVertice , lastvert = 0;
+                        //generate a random point for the half way point
+                        randomPoint.x = 1920/2;
+                        randomPoint.y = 1000/2;
                         points.push_back(randomPoint);
-                        for (int i = 0; i < 50000; i++)
+                        for (int i = 0; i < 20000; i++)
                         {
                             randomVertice = rand() % 4;
-                            randomPoint.x = (points[i].x + vertices[randomVertice].x) / 2;
-                            randomPoint.y = (points[i].y + vertices[randomVertice].y) / 2;
-                            points.push_back(randomPoint);
-                            rect.setPosition(points[i]);
-                            textbox.setFillColor(sf::Color::Transparent);
-                            textbox.setOutlineColor(sf::Color::Transparent);
-                            window.draw(rect);
-                            window.display();
+                            if (randomVertice != lastvert)
+                            {
+
+                                //Making random point half way away from our planted vertices
+                                randomPoint.x = (points[i].x + vertices[randomVertice].x) / 2;
+                                randomPoint.y = (points[i].y + vertices[randomVertice].y) / 2;
+                                //putting this point in a vector and printing it to screen
+                                points.push_back(randomPoint);
+                                rect.setPosition(points[i]);
+                                window.draw(rect);
+                                window.display();
+                            }
+                            else
+                            {
+                                points.push_back(randomPoint);
+                            }
+                            //making or current point the last one
+                            lastvert = randomVertice;
                         }
                     }
                     //same algorithm accept with 5 vertices(pentagon)
@@ -128,21 +143,30 @@ int main()
                         textbox.setOutlineColor(sf::Color::Green);
                         textbox.setPosition(0, 0);
                         window.draw(textbox);
-                        int randomVertice;
-                        randomPoint.x = event.mouseButton.x;
-                        randomPoint.y = event.mouseButton.y;
+                        int randomVertice, lastvert = 0;
+                        randomPoint.x = 1920 / 2;
+                        randomPoint.y = 1000 / 2;
                         points.push_back(randomPoint);
                         for (int i = 0; i < 100000; i++)
                         {
                             randomVertice = rand() % 5;
-                            randomPoint.x = (points[i].x + vertices[randomVertice].x) / 2;
-                            randomPoint.y = (points[i].y + vertices[randomVertice].y) / 2;
-                            points.push_back(randomPoint);
-                            rect.setPosition(points[i]);
-                            textbox.setFillColor(sf::Color::Transparent);
-                            textbox.setOutlineColor(sf::Color::Transparent);
-                            window.draw(rect);
-                            window.display();
+                            if (randomVertice != lastvert)
+                            {
+                                //Making random point half way away from our planted vertices
+                                randomPoint.x = (points[i].x + vertices[randomVertice].x)/2;
+                                randomPoint.y = (points[i].y + vertices[randomVertice].y)/2;
+                                //putting this point in a vector and printing it to screen
+                                points.push_back(randomPoint);
+                                rect.setPosition(points[i]);
+                                window.draw(rect);
+                                window.display();
+                            }
+                            else
+                            {
+                                points.push_back(randomPoint);
+                            }
+                            //making or current point the last one
+                            lastvert = randomVertice;
                         }
                     }
                     //If less thent 3 error message
