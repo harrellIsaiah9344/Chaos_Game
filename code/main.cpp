@@ -36,7 +36,7 @@ int main()
    
     //font declaration
     Font font;
-    font.loadFromFile("arial.ttf");
+    font.loadFromFile("batmaf__.ttf");
     Text textbox("Please Click between 3 to 5 times in order to set the vertices", font, 15);
     textbox.setFillColor(sf::Color::Green);
     textbox.setOutlineColor(sf::Color::Red);
