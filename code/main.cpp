@@ -4,7 +4,6 @@
 #include <ctime>
 using namespace sf;
 using namespace std;
-
 int main()
 {
     //declarations
@@ -17,7 +16,7 @@ int main()
    
     //font declaration
     Font font;
-    font.loadFromFile("arial.ttf");
+    font.loadFromFile("batmfa__.ttf");
     Text textbox("Please Click between 3 to 5 times in order to set the vertices", font, 15);
     textbox.setFillColor(sf::Color::Green);
     textbox.setOutlineColor(sf::Color::Red);
@@ -137,36 +136,33 @@ int main()
                     //same algorithm accept with 5 vertices(pentagon)
                     else if (vertices.size() == 5)
                     {
+                        float scalar = 5/8.0;
+                        
                       
                         textbox.setString("You have enough vertices now");
                         textbox.setFillColor(sf::Color::Green);
                         textbox.setOutlineColor(sf::Color::Green);
                         textbox.setPosition(0, 0);
                         window.draw(textbox);
-                        int randomVertice, lastvert = 0;
+                        int randomVertice, lastvert, lastlastvert = 0;
                         randomPoint.x = 1920 / 2;
-                        randomPoint.y = 1000 / 2;
+                        randomPoint.y = 1080 / 2;
                         points.push_back(randomPoint);
-                        for (int i = 0; i < 100000; i++)
+                        for (int i = 0; i < 10000; i++)
                         {
-                            randomVertice = rand() % 5;
-                            if (randomVertice != lastvert)
-                            {
+                                randomVertice = rand() % 5;
                                 //Making random point half way away from our planted vertices
-                                randomPoint.x = (points[i].x + vertices[randomVertice].x)/2;
-                                randomPoint.y = (points[i].y + vertices[randomVertice].y)/2;
+                                randomPoint.x = points[i].x + (vertices[randomVertice].x - points[i].x)* scalar; 
+                                randomPoint.y = points[i].y + (vertices[randomVertice].y - points[i].y) * scalar;
                                 //putting this point in a vector and printing it to screen
                                 points.push_back(randomPoint);
                                 rect.setPosition(points[i]);
                                 window.draw(rect);
                                 window.display();
-                            }
-                            else
-                            {
-                                points.push_back(randomPoint);
-                            }
-                            //making or current point the last one
+                            
+                            lastlastvert = lastvert;
                             lastvert = randomVertice;
+                         
                         }
                     }
                     //If less thent 3 error message
