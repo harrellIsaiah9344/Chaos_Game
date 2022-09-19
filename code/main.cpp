@@ -1,9 +1,12 @@
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <ctime>
 using namespace sf;
 using namespace std;
+
 int main()
 {
     //declarations
@@ -13,10 +16,27 @@ int main()
     //window
     VideoMode win(1920, 1080, 32);
     RenderWindow window(win, "Chaos Game", Style::Default);
+    
+    //sounds
+    SoundBuffer cheerBuffer;
+    cheerBuffer.loadFromFile("Cheer.wav");
+    Sound cheer;
+    cheer.setBuffer(cheerBuffer);
+
+    SoundBuffer kazooBuffer;
+    kazooBuffer.loadFromFile("Kazoo.wav");
+    Sound Kazoo;
+    Kazoo.setBuffer(kazooBuffer);
+   
+    SoundBuffer BeepBuffer;
+    BeepBuffer.loadFromFile("Beep.wav");
+    Sound Beep;
+    Beep.setBuffer(BeepBuffer);
+
    
     //font declaration
     Font font;
-    font.loadFromFile("batmfa__.ttf");
+    font.loadFromFile("arial.ttf");
     Text textbox("Please Click between 3 to 5 times in order to set the vertices", font, 15);
     textbox.setFillColor(sf::Color::Green);
     textbox.setOutlineColor(sf::Color::Red);
@@ -25,7 +45,7 @@ int main()
     textbox.setPosition(1920 / 4, 1080 / 4);
     
     //Mouse mouse1;
-    vector<Vector2f> vertices, lastvertices;
+    vector<Vector2f> vertices, lastvertices,lastLastVertices;
     vector<Vector2f> points;
     Vector2f clicked;
     Vector2f randomPoint;
@@ -47,6 +67,7 @@ int main()
         {
             if (event.type == sf::Event::MouseButtonPressed)
             {
+                Beep.play();
                 window.clear();
                 window.display();
                 //checks if left mouse button is clicked. If yes then pushback x and y position to vector of vertices
@@ -96,6 +117,8 @@ int main()
                             window.draw(rect);
                             window.display();
                         }
+                        cheer.play();
+                        Kazoo.play();
                     }
                     //same algorithm accept with 4 vertices(square)
                     else if (vertices.size() == 4)
@@ -132,13 +155,13 @@ int main()
                             //making or current point the last one
                             lastvert = randomVertice;
                         }
+                        cheer.play();
+                        Kazoo.play();
                     }
                     //same algorithm accept with 5 vertices(pentagon)
                     else if (vertices.size() == 5)
                     {
-                        float scalar = 5/8.0;
-                        
-                      
+                        float scalar = 5 / 8.0;
                         textbox.setString("You have enough vertices now");
                         textbox.setFillColor(sf::Color::Green);
                         textbox.setOutlineColor(sf::Color::Green);
@@ -150,20 +173,18 @@ int main()
                         points.push_back(randomPoint);
                         for (int i = 0; i < 10000; i++)
                         {
-                                randomVertice = rand() % 5;
-                                //Making random point half way away from our planted vertices
-                                randomPoint.x = points[i].x + (vertices[randomVertice].x - points[i].x)* scalar; 
-                                randomPoint.y = points[i].y + (vertices[randomVertice].y - points[i].y) * scalar;
-                                //putting this point in a vector and printing it to screen
-                                points.push_back(randomPoint);
-                                rect.setPosition(points[i]);
-                                window.draw(rect);
-                                window.display();
-                            
-                            lastlastvert = lastvert;
-                            lastvert = randomVertice;
-                         
+                            randomVertice = rand() % 5;
+                            //Making random point half way away from our planted vertices
+                            randomPoint.x = points[i].x + (vertices[randomVertice].x - points[i].x) * scalar;
+                            randomPoint.y = points[i].y + (vertices[randomVertice].y - points[i].y) * scalar;
+                            //putting this point in a vector and printing it to screen
+                            points.push_back(randomPoint);
+                            rect.setPosition(points[i]);
+                            window.draw(rect);
+                            window.display();
                         }
+                        cheer.play();
+                        Kazoo.play();
                     }
                     //If less thent 3 error message
                     else if (vertices.size() < 3)
